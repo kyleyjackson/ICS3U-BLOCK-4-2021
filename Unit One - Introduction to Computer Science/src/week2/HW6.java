@@ -1,6 +1,6 @@
-package week1;
+package week2;
 
-public class VolumeOfSphere {
+public class HW6 {
     public static void main(String[] args) {
         int radius = 25;
         double radiusCubed = radius * radius * radius;

@@ -1,6 +1,6 @@
-package week1;
+package week2;
 
-public class SlopeOfALine {
+public class HW8 {
     public static void main(String[] args) {
         double x1 = 10;
         double x2 = 15;

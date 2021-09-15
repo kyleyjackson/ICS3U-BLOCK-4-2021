@@ -1,0 +1,2 @@
+The output of the code in #12 is: 8.5, 6.0, 2.5, 35, 1.333333333333333
+

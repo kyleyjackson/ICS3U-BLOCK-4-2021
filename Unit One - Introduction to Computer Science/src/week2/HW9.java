@@ -1,6 +1,6 @@
-package week1;
+package week2;
 
-public class Money {
+public class HW9 {
     public static void main(String[] args) {
         double pennies = 15;
         double nickels = 25;

@@ -1,6 +1,6 @@
-package week1;
+package week2;
 
-public class AreaOfCircle {
+public class HW5 {
     public static void main(String[] args) {
         double radius = 25;
         double radiusSquared = radius * radius;
