@@ -6,12 +6,13 @@ public class ExtraPractice {
         System.out.println(randomIntTwo());
         System.out.println(diceRoll());
         System.out.println(randomIntThree(20, 10));
-        System.out.println(removeLetterE("Eat apples"));
+        System.out.println(removeLetterE("There is no capital e"));
         System.out.println(removeSubString("I like to eat apples", 2, 10));
+        System.out.println(removeSubString2("This is read, not red", "red"));
         System.out.println(sumOfStringLengths("I enjoy pie", "That was a lie"));
         System.out.println(slopeOfLine(10, 50, 15, 27));
         System.out.println(volumeOfCylinder(40, 20));
-        System.out.println(removeRandomChars("I like to eat apples"));
+        System.out.println(removeRandomChars("Computers"));
 
     }
 
@@ -46,6 +47,10 @@ public class ExtraPractice {
 
     public static String removeSubString(String str, int index1, int index2) {
         String subStr = str.substring(index1, index2);
+        return str.replaceFirst(subStr, "");
+    }
+
+    public static String removeSubString2(String str, String subStr) {
         return str.replaceFirst(subStr, "");
     }
 
