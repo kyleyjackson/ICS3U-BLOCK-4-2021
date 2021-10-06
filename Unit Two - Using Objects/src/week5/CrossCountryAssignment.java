@@ -58,12 +58,14 @@ public class CrossCountryAssignment {
 
     private static String convertToTime(double diffInSeconds) {
         // Converts from seconds, into the standard format 0:00.000
-        int minutes = (int) diffInSeconds / 60;
-        double seconds = diffInSeconds % 60;
-        if (seconds < 10) {
-            return minutes + ":" + "0" + String.format("%.3f", seconds);
-        } else {
-            return minutes + ":" + String.format("%.3f", seconds);
+        int minutes = (int) diffInSeconds / 60; // Getting minutes as an int
+        double seconds = diffInSeconds % 60; // Seconds as a double
+
+        if (seconds < 10) { // Checks if the seconds is less than 10
+            return minutes + ":" + "0" + String.format("%.3f", seconds); // Adds a zero in front, also formatting for
+                                                                         // decimal places
+        } else { // If it's bigger than 10
+            return minutes + ":" + String.format("%.3f", seconds); // No zero added, just formatting and colon
         }
 
     }
@@ -73,13 +75,14 @@ public class CrossCountryAssignment {
         int seconds1;
         // Checks index of the colon in the time
         if (endTime.indexOf(":") == 1) {
-            // Parses the strings excluding the double, based on the index of the colon
-            seconds = Double.parseDouble(endTime.substring(2));
-            seconds1 = Integer.parseInt(endTime.substring(0, 1));
-        } else if (endTime.indexOf(":") == 2) {
+            // Parses the strings excluding the colon, based it's index
+            seconds = Double.parseDouble(endTime.substring(2)); // Parses the second(s)
+            seconds1 = Integer.parseInt(endTime.substring(0, 1)); // Parses the minute(s)
+        } else if (endTime.indexOf(":") == 2) { // If the colon is not at index 1 (which would mean single digit
+                                                // minutes)
             seconds = Double.parseDouble(endTime.substring(3));
             seconds1 = Integer.parseInt(endTime.substring(0, 2));
-        } else {
+        } else { // If the colon is at index 3, no code for 4 and further
             seconds = Double.parseDouble(endTime.substring(4));
             seconds1 = Integer.parseInt(endTime.substring(0, 3));
         }
