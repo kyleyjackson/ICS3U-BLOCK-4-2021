@@ -78,7 +78,7 @@ public class CrossCountryAssignment {
             // Parses the strings excluding the colon, based it's index
             seconds = Double.parseDouble(endTime.substring(2)); // Parses the second(s)
             seconds1 = Integer.parseInt(endTime.substring(0, 1)); // Parses the minute(s)
-        } else if (endTime.indexOf(":") == 2) { // If the colon is not at index 1 (which would mean single digit
+        } else if (endTime.indexOf(":") == 2) { // If the colon is not at index 1 (which would mean double digit
                                                 // minutes)
             seconds = Double.parseDouble(endTime.substring(3));
             seconds1 = Integer.parseInt(endTime.substring(0, 2));
