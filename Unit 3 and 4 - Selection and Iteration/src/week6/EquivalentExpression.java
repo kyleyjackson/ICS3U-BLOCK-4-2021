@@ -15,5 +15,12 @@ public class EquivalentExpression {
         // *Compound boolean expressions
         // (x > 7) && (x < 10), joining simple expressions with "||" (or) and "&&" (and)
 
+        int y = 15;
+        int z = 20;
+
+        boolean result1 = (y != x) && (z > y);
+
+        System.out.println(result1);
+
     }
 }
