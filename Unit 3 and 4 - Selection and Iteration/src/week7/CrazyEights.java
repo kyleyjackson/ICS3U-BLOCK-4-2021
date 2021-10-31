@@ -56,7 +56,6 @@ public class CrazyEights {
         String computer1Hand = "";
         String computer2Hand = "";
         String topCard = "";
-        boolean validInput = false;
 
         playerHand = getCard() + " ";
         playerHand += getCard() + " ";
@@ -79,11 +78,14 @@ public class CrazyEights {
         while (!gameOver(playerPoints, c1Points, c2Points)) {
             String result = playRound(in, playerHand, computer1Hand, computer2Hand, topCard);
             int firstDash = result.indexOf("-");
-            int secondDash = result.lastIndexOf("-");
+            int asterix = result.indexOf("*");
             playerPoints += Integer.parseInt(result.substring(0, firstDash));
-            c1Points += Integer.parseInt(result.substring(firstDash + 1, secondDash));
-            c2Points += Integer.parseInt(result.substring(secondDash + 1));
+            c1Points += Integer.parseInt(result.substring(firstDash + 1, asterix));
+            c2Points += Integer.parseInt(result.substring(asterix + 1));
         }
+        System.out.println("\n-----------------------------------------------------------\n");
+        System.out.println("FINAL POINTS");
+        System.out.println("PLAYER: " + playerPoints + " COMPUTER ONE: " + c1Points + " COMPUTER TWO: " + c2Points);
         return getWinner(playerPoints, c1Points, c2Points);
     }
 
@@ -107,36 +109,52 @@ public class CrazyEights {
         // *hand-topCard
 
         topCard = getCard();
-        if (topCard.substring(0, 1).equals("8")) {
+        while(topCard.indexOf("8") >= 0) {
             topCard = getCard();
-        } else {
-            System.out.println("The top card is: " + topCard);
         }
 
+        System.out.println("The top card is: " + topCard);
+
+        GAME:
         while (playerHand.isBlank() == false || c1Hand.isBlank() == false || c2Hand.isBlank() == false) {    
             System.out.println("\n-----------------------------------------------------------\n");
             System.out.println("Your hand is: " + playerHand);
-            System.out.println("Computer 1 hand is: " + c1Hand);
-            System.out.println("Computer 2 hand is: " + c2Hand);
+            System.out.println("Computer 1 hand is: " + convertHandToX(c1Hand));
+            System.out.println("Computer 2 hand is: " + convertHandToX(c2Hand));
             System.out.println("\n-----------------------------------------------------------\n");
 
             String temp = processPlayer(in, playerHand, topCard);
             playerHand = temp.substring(0, temp.indexOf("-"));
             topCard = temp.substring(temp.indexOf("-") + 1);
 
+            if(playerHand.isBlank() == true) {
+                break GAME;
+            }
+
             temp = processComputer(c1Hand, topCard, playerHand, c2Hand);
             c1Hand = temp.substring(0, temp.indexOf("-"));
             topCard = temp.substring(temp.indexOf("-") + 1);
 
+            if(c1Hand.isBlank() == true) {
+                break GAME;
+            }
+
             temp = processComputer(c2Hand, topCard, playerHand, c1Hand);
             c2Hand = temp.substring(0, temp.indexOf("-"));
             topCard = temp.substring(temp.indexOf("-") + 1);
+
+            if(c2Hand.isBlank() == true) {
+                break GAME;
+            }
+            //!break;
         }
         String points = calculatePoints(playerHand, c1Hand, c2Hand);
         String playerPoints = points.substring(0, points.indexOf("-"));
         String c1Points = points.substring(points.indexOf("-") + 1, points.indexOf("*"));
         String c2Points = points.substring(points.indexOf("*") + 1);
-        System.out.println("Player Points: " + playerPoints + " Computer 1 Points: " + c1Points + " Computer 2 Points: " + c2Points);
+        System.out.println("Points this round");
+        System.out.println("Player Points: " + playerPoints + " | Computer 1 Points: " + c1Points + " | Computer 2 Points: " + c2Points);
+        System.out.println("\n-----------------------------------------------------------\n");
         return points;
     }
 
@@ -155,7 +173,7 @@ public class CrazyEights {
         int c1Points = 0;
         int c2Points = 0;
 
-        if(checkIfBlank(playerHand) == true) {
+        if (checkIfBlank(playerHand) == true) {
             playerPoints = 0;
         }else {
             for (int i = 0; i < playerHand.length(); i++) {
@@ -192,7 +210,7 @@ public class CrazyEights {
             }
         }
         
-        if(checkIfBlank(c1Hand) == true) {
+        if (checkIfBlank(c1Hand) == true) {
             c1Points = 0;
         }else {
             for (int i = 0; i < c1Hand.length(); i++) {
@@ -490,12 +508,26 @@ public class CrazyEights {
     }
 
     private static boolean validateCard(String card) {
-        String validCards = "AS2S3S4S5S6S7S8S9S10SJSQSKSAC2C3C4C5C6C7C8C9C10CJCQCKCAD2D3D4D5D6D7D8D9D10DJDQDKDAH2H3H4H5H6H7H8H9H10HJHQHKH";
+        String validCards = "AS 2S 3S 4S 5S 6S 7S 8S 9S 10S JS QS KS AC 2C 3C 4C 5C 6C 7C 8C 9C 10C JC QC KC AD 2D 3D 4D 5D 6D 7D 8D 9D 10D JD QD KD AH 2H 3H 4H 5H 6H 7H 8H 9H 10H JH QH KH";
         if (validCards.indexOf(card) >= 0) {
             return true;
         } else {
             return false;
         }
+    }
+
+    //*Converts hand to X's
+    private static String convertHandToX(String hand) {
+        String newHand = "";
+        for(int i = 0; i < hand.length(); i++) { //*This line and below iterate through the string
+            String temp = hand.substring(i, i + 1);
+            if(temp.equals(" ")) { //* if it's a blank space, just add a space
+                newHand += " ";
+            }else { //* if it's not a space add an X
+                newHand += "X";
+            }
+        }
+        return newHand.replaceAll("XXX", "XX"); //* Since 10H, 10C, 10D, 10A are 3 long, replace those with XX to not give the hand away
     }
 
     private static boolean playAgain(Scanner in) {
@@ -512,7 +544,6 @@ public class CrazyEights {
                 System.out.println("Invalid Input: Yes or No only!");
             }
         }
-
         return false;
     }
 
@@ -549,6 +580,7 @@ public class CrazyEights {
             return KING_FACE;
     }
 
+    //* Allows the computer to change the suit when an 8 is played
     private static String computerChangeSuit(String topCard, String c1Hand) {
         int newSuit = (int) Math.random() * 3;
 
@@ -588,11 +620,13 @@ public class CrazyEights {
         return topCard;
     }
 
+    //*Computer draw card function
     private static String computerDrawCard(String c1Hand, String topCard) {
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 5; i++) { //*Max of 5 cards (i < 5)
+            //*Card to be drawn
             String newCard = getCard();
             if (checkFace(c1Hand, topCard) == true || checkSuit(c1Hand, topCard) == true || newCard.indexOf("8") >= 0) {
-                break;
+                break; //*If they can play, stop drawing cards
             } else {
                 c1Hand += newCard + " ";
                 System.out.println("Computer drew a " + newCard);
