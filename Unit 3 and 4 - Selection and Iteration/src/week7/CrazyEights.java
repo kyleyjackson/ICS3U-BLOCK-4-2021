@@ -36,6 +36,7 @@ public class CrazyEights {
         int playerPoints = 0;
         int c1Points = 0;
         int c2Points = 0;
+        boolean stopPlaying = false;
 
         int winner = playCrazyEights(in, playerPoints, c1Points, c2Points);
         
@@ -48,6 +49,15 @@ public class CrazyEights {
         }else if(winner == 4) {
             System.out.println("TIE!!!");
         }
+
+        while(!stopPlaying) {
+            if(playAgain(in) == true) {
+                playCrazyEights(in, playerPoints, c1Points, c2Points);
+            }else {
+                stopPlaying = true;
+            }
+        }
+        
         
     }
 
@@ -56,24 +66,6 @@ public class CrazyEights {
         String computer1Hand = "";
         String computer2Hand = "";
         String topCard = "";
-
-        playerHand = getCard() + " ";
-        playerHand += getCard() + " ";
-        playerHand += getCard() + " ";
-        playerHand += getCard() + " ";
-        playerHand += getCard() + " ";
-
-        computer1Hand = getCard() + " ";
-        computer1Hand += getCard() + " ";
-        computer1Hand += getCard() + " ";
-        computer1Hand += getCard() + " ";
-        computer1Hand += getCard() + " ";
-
-        computer2Hand = getCard() + " ";
-        computer2Hand += getCard() + " ";
-        computer2Hand += getCard() + " ";
-        computer2Hand += getCard() + " ";
-        computer2Hand += getCard() + " ";
 
         while (!gameOver(playerPoints, c1Points, c2Points)) {
             String result = playRound(in, playerHand, computer1Hand, computer2Hand, topCard);
@@ -115,7 +107,25 @@ public class CrazyEights {
 
         System.out.println("The top card is: " + topCard);
 
-        GAME:
+        playerHand = getCard() + " ";
+        playerHand += getCard() + " ";
+        playerHand += getCard() + " ";
+        playerHand += getCard() + " ";
+        playerHand += getCard() + " ";
+
+        c1Hand = getCard() + " ";
+        c1Hand += getCard() + " ";
+        c1Hand += getCard() + " ";
+        c1Hand += getCard() + " ";
+        c1Hand += getCard() + " ";
+
+        c2Hand = getCard() + " ";
+        c2Hand += getCard() + " ";
+        c2Hand += getCard() + " ";
+        c2Hand += getCard() + " ";
+        c2Hand += getCard() + " ";
+
+        GAME: //*Game loop, to break out of when a hand is blank
         while (playerHand.isBlank() == false || c1Hand.isBlank() == false || c2Hand.isBlank() == false) {    
             System.out.println("\n-----------------------------------------------------------\n");
             System.out.println("Your hand is: " + playerHand);
@@ -127,6 +137,7 @@ public class CrazyEights {
             playerHand = temp.substring(0, temp.indexOf("-"));
             topCard = temp.substring(temp.indexOf("-") + 1);
 
+            //*If playerHand is blank, break out of game
             if(playerHand.isBlank() == true) {
                 break GAME;
             }
@@ -148,6 +159,7 @@ public class CrazyEights {
             }
             //!break;
         }
+        //*Points variable to display points in playRound()
         String points = calculatePoints(playerHand, c1Hand, c2Hand);
         String playerPoints = points.substring(0, points.indexOf("-"));
         String c1Points = points.substring(points.indexOf("-") + 1, points.indexOf("*"));
@@ -173,10 +185,10 @@ public class CrazyEights {
         int c1Points = 0;
         int c2Points = 0;
 
-        if (checkIfBlank(playerHand) == true) {
+        if (checkIfBlank(playerHand) == true) { //* If the player (in this case me) won the round, no points are added
             playerPoints = 0;
         }else {
-            for (int i = 0; i < playerHand.length(); i++) {
+            for (int i = 0; i < playerHand.length(); i++) { //* Get the point value corresponding to the face of the card
                 String temp = playerHand.substring(i, i + 1);
                 if (temp.equals("A")) {
                     playerPoints += ACE;
@@ -210,7 +222,7 @@ public class CrazyEights {
             }
         }
         
-        if (checkIfBlank(c1Hand) == true) {
+        if (checkIfBlank(c1Hand) == true) { //* Repeats for all the hands
             c1Points = 0;
         }else {
             for (int i = 0; i < c1Hand.length(); i++) {
@@ -283,7 +295,7 @@ public class CrazyEights {
                 }
             }
         }
-        return Integer.toString(playerPoints) + "-" + Integer.toString(c1Points) + "*" + Integer.toString(c2Points);
+        return Integer.toString(playerPoints) + "-" + Integer.toString(c1Points) + "*" + Integer.toString(c2Points); //* Sends the integer point values back to String so they can be displayed
     }
 
     /**
@@ -459,7 +471,7 @@ public class CrazyEights {
                 }
             }
         }
-        return playerHand.replaceAll("\\s+", " ") + "-" + topCard;
+        return playerHand.replaceAll("\\s+", " ") + "-" + topCard; //* Eliminates all double spaces, so substring doesn't get confused
     }
 
     // *Iterates through the player's hand to see if they have a matching suit
@@ -496,18 +508,18 @@ public class CrazyEights {
     }
 
     private static boolean checkFace(String playerHand, String topCard) {
-        if (topCard.trim().length() == 3) {
+        if (topCard.trim().length() == 3) { //* For when the card is 10
             return playerHand.contains(topCard.substring(0, 2));
-        } else {
+        } else { //* for every other card
             return playerHand.contains(topCard.substring(0, 1));
         }
     }
 
     private static boolean checkSuit(String playerHand, String topCard) {
-        return playerHand.contains(topCard.substring(topCard.length() - 1, topCard.length()));
+        return playerHand.contains(topCard.substring(topCard.length() - 1, topCard.length())); //* Checks if the playerHand contains the top card's suit
     }
 
-    private static boolean validateCard(String card) {
+    private static boolean validateCard(String card) { //* Method just to check if the card is an actual card, to avoid bugs
         String validCards = "AS 2S 3S 4S 5S 6S 7S 8S 9S 10S JS QS KS AC 2C 3C 4C 5C 6C 7C 8C 9C 10C JC QC KC AD 2D 3D 4D 5D 6D 7D 8D 9D 10D JD QD KD AH 2H 3H 4H 5H 6H 7H 8H 9H 10H JH QH KH";
         if (validCards.indexOf(card) >= 0) {
             return true;
