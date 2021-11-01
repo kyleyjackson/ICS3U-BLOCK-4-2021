@@ -36,7 +36,6 @@ public class CrazyEights {
         int playerPoints = 0;
         int c1Points = 0;
         int c2Points = 0;
-        boolean stopPlaying = false;
 
         int winner = playCrazyEights(in, playerPoints, c1Points, c2Points);
         
@@ -48,17 +47,7 @@ public class CrazyEights {
             System.out.println("COMPUTER TWO WINS!!!");
         }else if(winner == 4) {
             System.out.println("TIE!!!");
-        }
-
-        while(!stopPlaying) {
-            if(playAgain(in) == true) {
-                playCrazyEights(in, playerPoints, c1Points, c2Points);
-            }else {
-                stopPlaying = true;
-            }
-        }
-        
-        
+        }  
     }
 
     private static int playCrazyEights(Scanner in, int playerPoints, int c1Points, int c2Points) {
@@ -104,7 +93,7 @@ public class CrazyEights {
         while(topCard.indexOf("8") >= 0) {
             topCard = getCard();
         }
-
+        System.out.println("\n-----------------------------------------------------------\n");
         System.out.println("The top card is: " + topCard);
 
         playerHand = getCard() + " ";
@@ -131,6 +120,7 @@ public class CrazyEights {
             System.out.println("Your hand is: " + playerHand);
             System.out.println("Computer 1 hand is: " + convertHandToX(c1Hand));
             System.out.println("Computer 2 hand is: " + convertHandToX(c2Hand));
+            System.out.println("The top card is: " + topCard);
             System.out.println("\n-----------------------------------------------------------\n");
 
             String temp = processPlayer(in, playerHand, topCard);
@@ -295,7 +285,8 @@ public class CrazyEights {
                 }
             }
         }
-        return Integer.toString(playerPoints) + "-" + Integer.toString(c1Points) + "*" + Integer.toString(c2Points); //* Sends the integer point values back to String so they can be displayed
+         //* Sends the integer point values back to String so they can be displayed
+         return Integer.toString(playerPoints) + "-" + Integer.toString(c1Points) + "*" + Integer.toString(c2Points);
     }
 
     /**
