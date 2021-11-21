@@ -242,6 +242,10 @@ public class DoubleArraySequence {
         int minimumCapacity = s1.manyItems + s2.manyItems;
         double[] data = new double[minimumCapacity];
 
+        if (s1 == null || s2 == null) {
+            throw new NullPointerException("There cannot be empty sequences...");
+        }
+
         for (int i = 0; i < s1.manyItems; i++) {
             data[i] = s1.data[i];
         }
